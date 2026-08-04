@@ -1,0 +1,23 @@
+backend:
+  name: github
+  repo: MintyOsinty/mintyosinty.github.io
+  branch: main
+  base_url: https://sveltia-cms-auth.<your-subdomain>.workers.dev
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "pages"
+    label: "Site Pages"
+    files:
+      - name: "home"
+        label: "Homepage"
+        file: "index.html"
+        fields:
+          - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
+      - name: "blog_github_pages"
+        label: "Blog: GitHub Pages Guide"
+        file: "blog-github-pages.html"
+        fields:
+          - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
