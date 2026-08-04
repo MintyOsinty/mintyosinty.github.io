@@ -2,7 +2,7 @@ backend:
   name: github
   repo: MintyOsinty/mintyosinty.github.io
   branch: main
-  base_url: https://sveltia-cms-auth.<your-subdomain>.workers.dev
+  base_url: https://sveltia-cms-auth.mintyosinty.workers.dev
 
 media_folder: "images"
 public_folder: "/images"
