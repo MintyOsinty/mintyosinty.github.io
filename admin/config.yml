@@ -8,18 +8,27 @@ media_folder: "images"
 public_folder: "/images"
 
 collections:
-  - name: "pages"
-    label: "Site Pages"
-    files:
-      - name: "home"
-        label: "Homepage"
-        file: "index.html"
-        format: "raw"
-        fields:
-          - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
-      - name: "blog_github_pages"
-        label: "Blog: GitHub Pages Guide"
-        file: "blog-github-pages.html"
-        format: "raw"
-        fields:
-          - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
+  # Blog + vlog posts. Each post is one Markdown file in _posts/.
+  # Jekyll wraps it in _layouts/post.html automatically.
+  - name: "posts"
+    label: "Field Notes (Posts)"
+    label_singular: "Post"
+    folder: "_posts"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish date", name: "date", widget: "datetime" }
+      - { label: "Short description", name: "description", widget: "text", required: false, hint: "1–2 sentences. Shows on the blog list and in search results." }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "Comma-separated, e.g. github, beginner" }
+      - { label: "Difficulty", name: "level", widget: "select", options: ["Beginner", "Intermediate", "Advanced"], default: "Beginner", required: false }
+      - { label: "YouTube link (vlogs only)", name: "video", widget: "string", required: false, hint: "Paste a YouTube URL to embed it at the top of the post. Leave blank for a normal blog post." }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # The homepage is intentionally NOT in the CMS any more.
+  # Edit index.html directly on GitHub so the CMS can never blank it again.

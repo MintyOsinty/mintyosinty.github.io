@@ -1,0 +1,12 @@
+title: MintyOsinty
+description: Tools, field notes and vlogs for beginners and veterans in tech.
+url: "https://mintyosinty.github.io"
+
+# Blog posts live at /blog/<post-title>/
+permalink: /blog/:title/
+
+markdown: kramdown
+highlighter: rouge
+
+exclude:
+  - README.md

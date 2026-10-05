@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ page.description | default: site.description | strip_html | strip_newlines | truncate: 160 }}">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ '/assets/css/retro.css' | relative_url }}">
+</head>
+<body>
+
+<nav>
+  <a href="{{ '/' | relative_url }}" class="logo">Minty<span class="ext">Osinty</span></a>
+  <ul>
+    <li><a href="{{ '/#tools' | relative_url }}">TOOLS</a></li>
+    <li><a href="{{ '/blog/' | relative_url }}">BLOG</a></li>
+    <li><a href="{{ '/#vlogs' | relative_url }}">VLOGS</a></li>
+    <li><a href="{{ '/#about' | relative_url }}">ABOUT</a></li>
+    <li><a href="{{ '/#contact' | relative_url }}">CONTACT</a></li>
+  </ul>
+  <div class="nav-hp">HP <span class="hearts">♥ ♥ ♥</span></div>
+</nav>
+
+<main class="page">
+{{ content }}
+</main>
+
+<footer>
+  <a href="{{ '/' | relative_url }}" class="logo" style="font-size:0.6rem">Minty<span class="ext">Osinty</span></a>
+  <div class="footer-note">© {{ site.time | date: "%Y" }} MintyOsinty — ALL CONTENT ORIGINAL.</div>
+  <div class="footer-lives">♥ ♥ ♥ GAME ON</div>
+</footer>
+
+</body>
+</html>

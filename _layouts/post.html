@@ -1,0 +1,44 @@
+---
+layout: default
+---
+{% assign words = content | strip_html | number_of_words %}
+{% assign minutes = words | divided_by: 200 | plus: 1 %}
+<article class="post">
+  <a href="{{ '/blog/' | relative_url }}" class="back-link">◀ ALL FIELD NOTES</a>
+
+  <header class="post-head">
+    <div class="post-meta">
+      {% for tag in page.tags %}<span class="tag">{{ tag | upcase }}</span>{% endfor %}
+      <span>{{ page.date | date: "%b %-d, %Y" | upcase }}</span>
+      <span>{{ minutes }} MIN READ</span>
+    </div>
+    <h1 class="post-h1">{{ page.title }}</h1>
+    {% if page.level %}
+    {% assign lvl = 1 %}{% if page.level == "Intermediate" %}{% assign lvl = 2 %}{% elsif page.level == "Advanced" %}{% assign lvl = 3 %}{% endif %}
+    <div class="level">
+      <span class="level-label">LVL</span>
+      {% for i in (1..3) %}<span class="lvl-block{% if i <= lvl %} on{% endif %}"></span>{% endfor %}
+      <span class="level-label">{{ page.level | upcase }}</span>
+    </div>
+    {% endif %}
+    {% if page.description %}<p class="post-lede">{{ page.description }}</p>{% endif %}
+  </header>
+
+  {% if page.video and page.video != "" %}
+    {% if page.video contains "youtu.be/" %}
+      {% assign vid = page.video | split: "youtu.be/" | last %}
+    {% else %}
+      {% assign vid = page.video | split: "v=" | last %}
+    {% endif %}
+    {% assign vid = vid | split: "&" | first | split: "?" | first %}
+    <div class="video-frame">
+      <iframe src="https://www.youtube-nocookie.com/embed/{{ vid }}" title="{{ page.title }}" allowfullscreen loading="lazy"></iframe>
+    </div>
+  {% endif %}
+
+  <div class="post-body">
+    {{ content }}
+  </div>
+
+  <div class="post-end">★ STAGE CLEAR ★</div>
+</article>
