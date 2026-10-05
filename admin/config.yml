@@ -14,10 +14,12 @@ collections:
       - name: "home"
         label: "Homepage"
         file: "index.html"
+        format: "raw"
         fields:
           - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
       - name: "blog_github_pages"
         label: "Blog: GitHub Pages Guide"
         file: "blog-github-pages.html"
+        format: "raw"
         fields:
           - { label: "Raw HTML", name: "body", widget: "code", default_language: "html" }
