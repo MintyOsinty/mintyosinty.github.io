@@ -7,3 +7,13 @@ tools:
     level: 4
     platform: Windows / Linux / macOS
     description: The classic free network scanner. Find live hosts, open ports and running services, and fingerprint operating systems across a network.
+    about: >-
+      Nmap is usually the first thing I open when I'm looking at a network I don't know yet.
+      It's free, it's been around forever, and it tells you what's actually out there:
+      what's up, what ports are open, and what's running on them.
+    uses:
+      - Figuring out what's on a network
+      - Finding open ports and what's running behind them
+      - Catching stuff that's exposed and shouldn't be
+      - Double-checking that firewall rules actually do what you think
+    note: Only scan networks you own or have permission to scan. Seriously.
