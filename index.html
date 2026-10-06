@@ -426,6 +426,37 @@
     margin: -0.5rem 0 1rem;
   }
 
+  /* "WHAT IS IT?" dropdown — sits above the card-wide link so it can be clicked */
+  .tool-intel { position: relative; z-index: 2; margin-bottom: 1rem; }
+  .tool-intel summary {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.38rem;
+    letter-spacing: 0.1em;
+    color: var(--card-color, var(--yellow));
+    cursor: pointer;
+    list-style: none;
+    padding: 0.4rem 0;
+  }
+  .tool-intel summary::-webkit-details-marker { display: none; }
+  .tool-intel summary::before { content: '▸ '; }
+  .tool-intel[open] summary::before { content: '▾ '; }
+  .tool-intel p, .tool-intel li {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: #b0b0dd;
+    line-height: 1.45;
+  }
+  .tool-intel p { margin: 0.5rem 0; }
+  .tool-intel ul { margin: 0.25rem 0 0.5rem 1.1rem; padding: 0; }
+  .intel-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.34rem;
+    color: var(--white);
+    margin-top: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+  .intel-note { color: var(--red) !important; }
+
   /* pixelated power icon */
   .tool-icon {
     font-size: 1.6rem;
@@ -1120,6 +1151,14 @@
       </div>
       <div class="tool-desc">{{ tool.description }}</div>
       {% if tool.platform %}<div class="tool-platform">&gt; {{ tool.platform }}</div>{% endif %}
+      {% if tool.about or tool.uses %}
+      <details class="tool-intel">
+        <summary>WHAT IS IT?</summary>
+        {% if tool.about %}<p>{{ tool.about }}</p>{% endif %}
+        {% if tool.uses %}<div class="intel-label">USED FOR:</div><ul>{% for u in tool.uses %}<li>{{ u }}</li>{% endfor %}</ul>{% endif %}
+        {% if tool.note %}<p class="intel-note">⚠ {{ tool.note }}</p>{% endif %}
+      </details>
+      {% endif %}
       <span class="tool-link">GET IT</span>
     </div>
     {% endfor %}
