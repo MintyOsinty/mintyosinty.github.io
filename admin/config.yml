@@ -52,5 +52,8 @@ collections:
               - { label: "Difficulty (1-10)", name: "level", widget: "number", value_type: "int", min: 1, max: 10, default: 3 }
               - { label: "Platform", name: "platform", widget: "string", required: false }
               - { label: "Short description", name: "description", widget: "text" }
+              - { label: "About (shows under WHAT IS IT?)", name: "about", widget: "text", required: false }
+              - { label: "Used for", name: "uses", widget: "list", required: false, hint: "One use per item" }
+              - { label: "Warning / note", name: "note", widget: "string", required: false }
   # The homepage is intentionally NOT in the CMS any more.
   # Edit index.html directly on GitHub so the CMS can never blank it again.
