@@ -1,0 +1,9 @@
+tools:
+  - name: Nmap
+    url: https://nmap.org/download
+    category: NETWORK SCANNING
+    icon: "📡"
+    color: green
+    level: 4
+    platform: Windows / Linux / macOS
+    description: The classic free network scanner. Find live hosts, open ports and running services, and fingerprint operating systems across a network.
