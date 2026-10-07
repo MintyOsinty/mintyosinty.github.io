@@ -279,7 +279,7 @@ Your run history lives in a Docker volume, so it survives stops, restarts and re
 | Problem | Fix |
 |---|---|
 | `failed to connect to the docker API at npipe:////./pipe/docker_engine` | Docker Desktop isn't running or hasn't finished starting. Open it and wait for **Engine running**. |
-| Docker Desktop spins forever on startup | Force a clean restart: `Get-Process "*docker*" \| Stop-Process -Force`, then `wsl --shutdown`, then relaunch Docker Desktop. If that doesn't help, run `wsl --update` in an admin PowerShell and reboot. |
+| Docker Desktop spins forever on startup | Force a clean restart: <code>Get-Process "*docker*" &#124; Stop-Process -Force</code>, then `wsl --shutdown`, then relaunch Docker Desktop. If that doesn't help, run `wsl --update` in an admin PowerShell and reboot. |
 | `wsl -l -v` shows `docker-desktop` as **Stopped** | Docker Desktop failed to boot its VM. Do the clean restart above. Running `wsl -d docker-desktop echo ok` shows the underlying error. |
 | Docker won't start at all | Check that virtualization is enabled (Task Manager → Performance → CPU). If it's disabled, turn on Intel VT-x or AMD-V in your BIOS. |
 | "not a directory" error when starting | `theHarvester\data\api-keys.yaml` or `proxies.yaml` is missing, so Docker created a folder in its place. Make sure both exist as files. |
