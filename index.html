@@ -1111,7 +1111,8 @@
           <div class="score-label">TOOLS</div>
         </div>
         <div class="score-item">
-          <div class="score-num">000</div>
+          {% assign post_count = site.posts | size %}
+          <div class="score-num">{% if post_count < 10 %}00{% elsif post_count < 100 %}0{% endif %}{{ post_count }}</div>
           <div class="score-label">ARTICLES</div>
         </div>
         <div class="score-item">
@@ -1177,29 +1178,40 @@
     <div class="sec-line"></div>
   </div>
 
+  <!-- Auto-filled from _posts/: newest post is featured, the next 3 go in the sidebar. -->
+  {% assign featured = site.posts.first %}
+  {% if featured %}
   <div class="blog-grid fade-up">
     <div class="post-featured">
+      {% assign f_words = featured.content | strip_html | number_of_words %}
       <div class="post-meta">
-        <span class="tag">[TAG]</span>
-        <span>[DATE]</span>
-        <span>[X MIN READ]</span>
+        {% if featured.tags.first %}<span class="tag">{{ featured.tags.first | upcase }}</span>{% endif %}
+        <span>{{ featured.date | date: "%b %-d, %Y" | upcase }}</span>
+        <span>{{ f_words | divided_by: 200 | plus: 1 }} MIN READ</span>
       </div>
-      <div class="post-title">[Add your featured post title]</div>
+      <div class="post-title">{{ featured.title }}</div>
       <div class="post-excerpt">
-        [Add your featured post excerpt here.]
+        {{ featured.description | default: featured.excerpt | strip_html | truncate: 220 }}
       </div>
-      <a href="#" class="btn btn-c" style="font-size:0.42rem; padding:0.6rem 1rem;">▶ READ ARTICLE</a>
+      <a href="{{ featured.url | relative_url }}" class="btn btn-c" style="font-size:0.42rem; padding:0.6rem 1rem;">▶ READ ARTICLE</a>
     </div>
 
     <div class="blog-sidebar">
-      <!-- Add more posts here using the pattern below:
-      <a href="#" class="post-small">
-        <div class="post-meta"><span class="tag">TAG</span><span>DATE</span></div>
-        <div class="post-title">Post title</div>
+      {% for post in site.posts offset:1 limit:3 %}
+      <a href="{{ post.url | relative_url }}" class="post-small">
+        <div class="post-meta">{% if post.tags.first %}<span class="tag">{{ post.tags.first | upcase }}</span>{% endif %}<span>{{ post.date | date: "%b %-d, %Y" | upcase }}</span></div>
+        <div class="post-title">{{ post.title }}</div>
       </a>
-      -->
+      {% endfor %}
+      <a href="{{ '/blog/' | relative_url }}" class="post-small">
+        <div class="post-meta"><span class="tag">{{ site.posts.size }} {% if site.posts.size == 1 %}POST{% else %}POSTS{% endif %}</span></div>
+        <div class="post-title">View all field notes ▶</div>
+      </a>
     </div>
   </div>
+  {% else %}
+  <p class="post-excerpt fade-up">No field notes yet — first post coming soon.</p>
+  {% endif %}
 </section>
 
 <!-- VLOGS -->
