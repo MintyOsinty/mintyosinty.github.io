@@ -51,7 +51,7 @@ themes:
 
   /* Live preview: render the page at desktop size, then shrink it to fit the card */
   .theme-preview { position: relative; height: 240px; overflow: hidden; background: #000; border-bottom: 3px solid var(--border); }
-  .theme-preview iframe { position: absolute; top: 0; left: 0; width: 1000px; height: 700px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .theme-preview iframe { overflow: hidden; position: absolute; top: 0; left: 0; width: 1000px; height: 700px; border: 0; transform-origin: 0 0; pointer-events: none; }
 
   .theme-body { padding: 1.1rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
   .theme-vibe { font-family: 'Press Start 2P', monospace; font-size: 0.4rem; color: var(--cyan); letter-spacing: 0.1em; }
@@ -91,7 +91,7 @@ themes:
     {% capture theme_url %}{{ '/starter-themes/' | relative_url }}{{ t.file }}.html{% endcapture %}
     <article class="theme-card">
       <div class="theme-preview">
-        <iframe src="{{ theme_url }}" title="{{ t.name }} preview" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
+        <iframe src="{{ theme_url }}" title="{{ t.name }} preview" scrolling="no" loading="lazy" tabindex="-1" aria-hidden="true"></iframe>
       </div>
       <div class="theme-body">
         <span class="theme-vibe">{{ t.vibe | upcase }}</span>
