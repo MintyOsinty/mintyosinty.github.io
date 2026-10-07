@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root { --green: #00ff41; --dim: #008f11; --bg: #000000; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 18px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* The falling code fills the whole screen behind everything */
+    #rain { position: fixed; inset: 0; z-index: 0; opacity: 0.5; }
+
+    .terminal {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 640px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--green);
+      box-shadow: 0 0 25px rgba(0, 255, 65, 0.35);
+      padding: 2rem;
+    }
+    .prompt { color: var(--dim); }
+    h1 { font-size: clamp(1.8rem, 6vw, 2.8rem); text-shadow: 0 0 10px var(--green); margin: 0.5rem 0 1rem; }
+    h2 { font-size: 1.1rem; margin: 1.75rem 0 0.5rem; }
+    .cursor { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    ul { list-style: none; }
+    li a { color: var(--green); text-decoration: none; }
+    li a::before { content: '> '; color: var(--dim); }
+    li a:hover { background: var(--green); color: var(--bg); }
+
+    footer { margin-top: 2rem; color: var(--dim); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <canvas id="rain"></canvas>
+
+  <div class="terminal">
+    <p class="prompt">C:\&gt; whoami</p>
+    <!-- CHANGE ME: your name -->
+    <h1>Your Name<span class="cursor">_</span></h1>
+
+    <!-- CHANGE ME: a few sentences about you -->
+    <p>Wake up... You followed the white rabbit to my homepage. I'm learning to build websites, and this is where I'll share my projects and notes.</p>
+
+    <h2>// links</h2>
+    <!-- CHANGE ME: point these at your own pages -->
+    <ul>
+      <li><a href="#">projects</a></li>
+      <li><a href="#">blog</a></li>
+      <li><a href="#">contact</a></li>
+    </ul>
+
+    <footer>[ connection secure ]</footer>
+  </div>
+
+  <script>
+    // Digital rain: draws random characters falling down a <canvas>
+    const canvas = document.getElementById('rain');
+    const ctx = canvas.getContext('2d');
+    const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
+    const size = 16;
+    let drops = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drops = Array(Math.ceil(canvas.width / size)).fill(0).map(() => Math.random() * -50);
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';           // fade the old frame
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
+      ctx.font = size + 'px monospace';
+      drops.forEach((y, i) => {
+        const ch = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(ch, i * size, y * size);
+        drops[i] = (y * size > canvas.height && Math.random() > 0.975) ? 0 : y + 1;
+      });
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    setInterval(draw, 50);
+  </script>
+</body>
+</html>

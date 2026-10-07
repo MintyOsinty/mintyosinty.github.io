@@ -88,6 +88,8 @@ Every website needs a homepage, and on GitHub Pages that file is called `index.h
 
 A **commit** is a saved snapshot of your files. Every time you commit, GitHub records exactly what changed, and that history will save you one day. More on that below.
 
+> **WANT MORE PERSONALITY?** This starter page is plain on purpose, so there's less to get wrong. Once it's working, swap in one of my free **[starter themes](/starter-themes/)**: eight ready-made designs, from a clean portfolio page to Disco Fever, Matrix code rain and a 90s GeoCities throwback. Click **Copy code**, paste it over your `index.html`, commit, then edit the `CHANGE ME` notes.
+
 ## Step 4: Turn on GitHub Pages
 
 For a repo named `yourname.github.io`, Pages is often switched on automatically. It's still worth checking:

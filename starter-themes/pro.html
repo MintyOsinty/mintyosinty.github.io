@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Change --accent to make this page your color */
+    :root {
+      --accent: #3b5bdb;
+      --text:   #1f2430;
+      --muted:  #5f6675;
+      --line:   #e6e8ee;
+      --soft:   #f5f7fb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: #fff; font-size: 17px; line-height: 1.65; }
+    .wrap { max-width: 820px; margin: 0 auto; padding: 0 1.25rem; }
+
+    header { padding: 4rem 0 3rem; border-bottom: 1px solid var(--line); }
+    .intro { display: flex; align-items: center; gap: 1.75rem; flex-wrap: wrap; }
+
+    /* Photo circle. To use a real photo, replace the YN div with:
+       <img class="avatar" src="me.jpg" alt="Your Name">  */
+    .avatar {
+      width: 112px; height: 112px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: 700; object-fit: cover;
+    }
+    h1 { font-size: clamp(2rem, 6vw, 2.8rem); line-height: 1.15; letter-spacing: -0.02em; }
+    .role { color: var(--accent); font-weight: 500; font-size: 1.15rem; }
+    .where { color: var(--muted); font-size: 0.95rem; }
+
+    .buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+    .btn { text-decoration: none; font-weight: 500; padding: 0.65rem 1.25rem; border-radius: 8px; border: 1px solid var(--line); color: var(--text); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn:hover { border-color: var(--accent); }
+
+    section { padding: 2.75rem 0; border-bottom: 1px solid var(--line); }
+    h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1rem; }
+
+    .skills { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; }
+    .skills li { background: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 0.3rem 0.9rem; font-size: 0.92rem; }
+
+    .projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .project { border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem; transition: box-shadow 0.15s, transform 0.15s; }
+    .project:hover { box-shadow: 0 8px 24px rgba(31, 36, 48, 0.08); transform: translateY(-2px); }
+    .project h3 { font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .project p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .project a { color: var(--accent); font-weight: 500; text-decoration: none; font-size: 0.95rem; }
+
+    footer { padding: 2.5rem 0 3rem; color: var(--muted); font-size: 0.9rem; }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="intro">
+        <div class="avatar" aria-hidden="true">YN</div>
+        <div>
+          <!-- CHANGE ME: your name, job title and location -->
+          <h1>Your Name</h1>
+          <p class="role">Aspiring Web Developer</p>
+          <p class="where">City, State · Open to opportunities</p>
+        </div>
+      </div>
+      <!-- CHANGE ME: link to your résumé, GitHub and email -->
+      <div class="buttons">
+        <a class="btn primary" href="#">Download Résumé</a>
+        <a class="btn" href="#">GitHub</a>
+        <a class="btn" href="mailto:you@example.com">Email Me</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>About</h2>
+      <!-- CHANGE ME: a few sentences about you -->
+      <p>I'm teaching myself web development, one project at a time. I like building things that are simple, fast and easy to use. This site is where I keep my work and what I've learned along the way.</p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <!-- CHANGE ME: add or remove skills -->
+      <ul class="skills">
+        <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Git &amp; GitHub</li><li>Responsive Design</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <!-- CHANGE ME: copy a project block to add more -->
+      <div class="projects">
+        <div class="project">
+          <h3>Personal Website</h3>
+          <p>The site you're looking at, built from scratch and hosted free on GitHub Pages.</p>
+          <a href="#">View project →</a>
+        </div>
+        <div class="project">
+          <h3>Project Two</h3>
+          <p>A short description of what it does and what you learned building it.</p>
+          <a href="#">View project →</a>
+        </div>
+        <div class="project">
+          <h3>Project Three</h3>
+          <p>Keep it to one or two sentences. Link to the code or a live demo.</p>
+          <a href="#">View project →</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © Your Name · <a href="mailto:you@example.com">you@example.com</a>
+    </footer>
+  </div>
+</body>
+</html>

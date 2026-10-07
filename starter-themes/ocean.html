@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sky:   #bfe7f5;
+      --sea:   #1c7fa6;
+      --deep:  #0b3c5d;
+      --foam:  #e8fbf7;
+      --sand:  #f6e7c8;
+      --coral: #ff7a59;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--deep);
+      background: linear-gradient(var(--sea), var(--deep));  /* the sea */
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sky: everything above the waves */
+    .sky { background: linear-gradient(var(--sky), #e9f7fb); }
+
+    /* Sky scene: sun and lighthouse */
+    .scene { position: relative; max-width: 900px; margin: 0 auto; height: 230px; }
+    .sun { position: absolute; top: 30px; left: 8%; width: 80px; height: 80px; border-radius: 50%; background: #ffd66b; box-shadow: 0 0 40px #ffd66b; }
+    .lighthouse { position: absolute; right: 8%; bottom: 0; width: 90px; height: 190px; overflow: visible; }
+    .beam { transform-origin: 45px 32px; animation: sweep 4s ease-in-out infinite alternate; }
+    @keyframes sweep { from { transform: rotate(-18deg); } to { transform: rotate(18deg); } }
+
+    header { text-align: center; position: relative; margin-top: -170px; padding: 0 1rem; }
+    h1 { font-family: 'Pacifico', cursive; font-weight: normal; font-size: clamp(2.6rem, 9vw, 4.2rem); color: var(--deep); text-shadow: 3px 3px 0 #fff; }
+    .tagline { font-weight: 700; color: var(--sea); }
+
+    /* Waves: wide wavy strips that slide sideways forever */
+    .waves { position: relative; height: 70px; margin-top: 70px; margin-bottom: -1px; overflow: hidden; }
+    .wave { position: absolute; left: 0; width: 200%; height: 100%; animation: drift 10s linear infinite; }
+    .wave.back { opacity: 0.5; animation-duration: 16s; animation-direction: reverse; }
+    @keyframes drift { to { transform: translateX(-50%); } }
+
+    /* Little fish swimming across */
+    .fish { position: absolute; width: 46px; transform: scaleX(-1); animation: swim 14s linear infinite; } /* flipped so they swim head-first */
+    .fish.two { width: 32px; animation-duration: 19s; animation-delay: -7s; }
+    @keyframes swim { from { left: -60px; } to { left: 100%; } }
+
+    main { position: relative; max-width: 640px; margin: 2rem auto 0; padding: 0 1rem 3rem; }
+    .card { background: var(--sand); border-radius: 24px; padding: 2rem; box-shadow: 0 14px 30px rgba(11, 60, 93, 0.35); }
+    h2 { font-family: 'Pacifico', cursive; font-weight: normal; color: var(--sea); font-size: 1.6rem; margin: 0.5rem 0 0.25rem; }
+    h2:not(:first-child) { margin-top: 1.5rem; }
+
+    .links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.75rem; }
+    .links a { text-decoration: none; color: #fff; font-weight: 700; background: var(--sea); padding: 0.6rem 1.4rem; border-radius: 999px; }
+    .links a:nth-child(2) { background: var(--coral); }
+    .links a:nth-child(3) { background: var(--deep); }
+    .links a:hover { filter: brightness(1.12); }
+
+    .swimmers { position: relative; height: 70px; }
+    footer { text-align: center; color: var(--foam); padding: 0 1rem 2rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="sky">
+  <div class="scene" aria-hidden="true">
+    <div class="sun"></div>
+    <!-- Lighthouse with a sweeping light beam -->
+    <svg class="lighthouse" viewBox="0 0 90 190">
+      <polygon class="beam" points="45,32 -160,0 -160,64" fill="#fff6b0" opacity="0.6"/>
+      <polygon points="30,40 60,40 70,190 20,190" fill="#ffffff"/>
+      <polygon points="28,70 62,70 64,95 26,95" fill="#e04b3c"/>
+      <polygon points="24,125 66,125 68,150 22,150" fill="#e04b3c"/>
+      <rect x="32" y="22" width="26" height="20" fill="#fff6b0" stroke="#0b3c5d" stroke-width="3"/>
+      <polygon points="28,22 62,22 45,6" fill="#0b3c5d"/>
+      <rect x="26" y="40" width="38" height="5" fill="#0b3c5d"/>
+    </svg>
+  </div>
+
+  <header>
+    <!-- CHANGE ME: your name and tagline -->
+    <h1>Your Name</h1>
+    <p class="tagline">riding the waves of the web</p>
+  </header>
+
+  <div class="waves" aria-hidden="true">
+    <svg class="wave back" viewBox="0 0 1200 70" preserveAspectRatio="none"><path d="M0 35 Q75 5 150 35 T300 35 T450 35 T600 35 T750 35 T900 35 T1050 35 T1200 35 V70 H0Z" fill="#e8fbf7"/></svg>
+    <svg class="wave" viewBox="0 0 1200 70" preserveAspectRatio="none"><path d="M0 45 Q75 20 150 45 T300 45 T450 45 T600 45 T750 45 T900 45 T1050 45 T1200 45 V70 H0Z" fill="#1c7fa6"/></svg>
+  </div>
+</div>
+
+  <main>
+    <div class="card">
+      <h2>Ahoy there!</h2>
+      <!-- CHANGE ME: a few sentences about you -->
+      <p>Welcome aboard. I'm learning to build websites, and this is my little harbor on the internet, where I share my projects and what I'm learning.</p>
+
+      <h2>Set sail</h2>
+      <!-- CHANGE ME: point these at your own pages -->
+      <div class="links">
+        <a href="#">Projects</a>
+        <a href="#">Blog</a>
+        <a href="#">Message in a bottle</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="swimmers" aria-hidden="true">
+    <!-- Simple fish shapes -->
+    <svg class="fish" viewBox="0 0 46 24"><ellipse cx="20" cy="12" rx="16" ry="9" fill="#ff7a59"/><polygon points="34,12 46,2 46,22" fill="#ff7a59"/><circle cx="11" cy="10" r="2" fill="#0b3c5d"/></svg>
+    <svg class="fish two" viewBox="0 0 46 24" style="top:34px"><ellipse cx="20" cy="12" rx="16" ry="9" fill="#ffd66b"/><polygon points="34,12 46,2 46,22" fill="#ffd66b"/><circle cx="11" cy="10" r="2" fill="#0b3c5d"/></svg>
+  </div>
+
+  <footer>Made with HTML &amp; sea breeze 🌊</footer>
+</body>
+</html>

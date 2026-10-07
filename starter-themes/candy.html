@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:  #ff8fc7;
+      --mint:  #8fe3cf;
+      --lemon: #fff1a8;
+      --grape: #b78cff;
+      --berry: #d6336c;
+      --text:  #5b2a4e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text);
+      /* Sprinkles: tiny colored dots repeated over a pink background */
+      background-color: #ffe3f1;
+      background-image:
+        radial-gradient(circle, var(--mint) 2px, transparent 3px),
+        radial-gradient(circle, var(--grape) 2px, transparent 3px),
+        radial-gradient(circle, var(--lemon) 2px, transparent 3px);
+      background-size: 60px 60px, 80px 80px, 50px 50px;
+      background-position: 0 0, 20px 35px, 40px 10px;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 12px 0 var(--pink), 0 20px 40px rgba(214, 51, 108, 0.25);
+    }
+
+    /* Candy-cane stripe header */
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: repeating-linear-gradient(-45deg, var(--pink) 0 22px, #fff 22px 44px);
+    }
+    h1 {
+      display: inline-block;
+      background: #fff;
+      color: var(--berry);
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      font-weight: 700;
+      padding: 0.3rem 1.5rem;
+      border-radius: 999px;
+      box-shadow: 0 6px 0 var(--berry);
+    }
+    .tagline { margin-top: 1.25rem; display: inline-block; background: var(--lemon); padding: 0.2rem 1rem; border-radius: 999px; font-weight: 600; }
+
+    main { padding: 2rem 2rem 2.5rem; }
+    h2 { color: var(--grape); font-size: 1.6rem; margin: 1.25rem 0 0.5rem; }
+
+    /* Gumdrop buttons */
+    .links { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.75rem; }
+    .links a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px 999px 24px 24px;
+      background: var(--berry);
+      box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.15);
+    }
+    .links a:nth-child(2) { background: var(--grape); }
+    .links a:nth-child(3) { background: #2bb59a; }
+    .links a:hover { transform: scale(1.06); }
+
+    footer { text-align: center; padding: 1rem; background: var(--mint); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <!-- CHANGE ME: your name and tagline -->
+      <h1>Your Name</h1><br>
+      <p class="tagline">🍭 sweet projects &amp; sugary ideas</p>
+    </header>
+
+    <main>
+      <h2>Hi, I'm new here!</h2>
+      <!-- CHANGE ME: a few sentences about you -->
+      <p>Welcome to my candy shop of a website. I'm learning HTML one sprinkle at a time, and this is where I'll share what I build and what I'm into.</p>
+
+      <h2>Pick a flavor</h2>
+      <!-- CHANGE ME: point these at your own pages -->
+      <div class="links">
+        <a href="#">Projects</a>
+        <a href="#">Blog</a>
+        <a href="#">Say hi</a>
+      </div>
+    </main>
+
+    <footer>Made with HTML &amp; a lot of sugar 🍬</footer>
+  </div>
+</body>
+</html>

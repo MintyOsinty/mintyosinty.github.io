@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink:   #ff4fa3;
+      --orange: #ff8c1a;
+      --yellow: #ffe03d;
+      --green:  #3ccf6a;
+      --teal:   #17b3c9;
+      --violet: #8a3ffc;
+      --ink:    #3a1f4d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Kalam', cursive;
+      font-size: 19px;
+      line-height: 1.6;
+      color: var(--ink);
+      padding: 2rem 1rem;
+      /* Tie-dye: a few overlapping color swirls */
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 79, 163, 0.85), transparent 35%),
+        radial-gradient(circle at 85% 15%, rgba(255, 224, 61, 0.85), transparent 35%),
+        radial-gradient(circle at 80% 80%, rgba(23, 179, 201, 0.85), transparent 40%),
+        radial-gradient(circle at 20% 85%, rgba(60, 207, 106, 0.85), transparent 40%),
+        conic-gradient(from 0deg at 50% 50%, var(--violet), var(--pink), var(--orange), var(--yellow), var(--green), var(--teal), var(--violet));
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .card {
+      max-width: 660px;
+      margin: 0 auto;
+      background: #fffaf0;
+      border-radius: 40px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border: 6px solid var(--ink);
+      box-shadow: 10px 10px 0 var(--ink);
+    }
+
+    .peace { width: 80px; height: 80px; margin: 0 auto 0.5rem; animation: sway 4s ease-in-out infinite; }
+    @keyframes sway { 50% { transform: rotate(12deg); } }
+
+    h1 {
+      font-family: 'Shrikhand', cursive;
+      font-weight: normal;
+      font-size: clamp(2.4rem, 9vw, 4rem);
+      line-height: 1.1;
+      /* Rainbow letters */
+      background: linear-gradient(90deg, var(--pink), var(--orange), var(--yellow), var(--green), var(--teal), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(3px 3px 0 var(--ink));
+    }
+    .tagline { margin-top: 0.5rem; font-weight: 700; font-size: 1.2rem; }
+
+    /* Row of flower-power daisies */
+    .flowers { font-size: 2rem; letter-spacing: 0.4rem; margin: 1.25rem 0 0.5rem; }
+
+    h2 { font-family: 'Shrikhand', cursive; font-weight: normal; color: var(--pink); font-size: 1.7rem; margin: 1.25rem 0 0.25rem; }
+
+    .links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem; margin-top: 0.9rem; }
+    .links a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: 3px solid var(--ink);
+      background: var(--violet);
+      transform: rotate(-2deg);
+    }
+    .links a:nth-child(2) { background: var(--orange); transform: rotate(2deg); }
+    .links a:nth-child(3) { background: var(--teal); }
+    .links a:hover { transform: rotate(0) scale(1.08); }
+
+    footer { margin-top: 1.75rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <!-- Peace sign, drawn with SVG -->
+    <svg class="peace" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="42" fill="none" stroke="#3a1f4d" stroke-width="9"/>
+      <line x1="50" y1="8" x2="50" y2="92" stroke="#3a1f4d" stroke-width="9"/>
+      <line x1="50" y1="50" x2="21" y2="80" stroke="#3a1f4d" stroke-width="9"/>
+      <line x1="50" y1="50" x2="79" y2="80" stroke="#3a1f4d" stroke-width="9"/>
+    </svg>
+
+    <!-- CHANGE ME: your name and tagline -->
+    <h1>Your Name</h1>
+    <p class="tagline">peace, love &amp; good vibes only</p>
+
+    <div class="flowers" aria-hidden="true">🌼🌸🌻🌸🌼</div>
+
+    <h2>Hey, friend!</h2>
+    <!-- CHANGE ME: a few sentences about you -->
+    <p>Welcome to my groovy little patch of the internet. Kick off your shoes and stay a while. I'm learning to build websites, and this is where I share my projects and whatever's on my mind.</p>
+
+    <h2>Far out links</h2>
+    <!-- CHANGE ME: point these at your own pages -->
+    <div class="links">
+      <a href="#">Projects</a>
+      <a href="#">Blog</a>
+      <a href="#">Say hi</a>
+    </div>
+
+    <footer>☮ Make websites, not war ☮</footer>
+  </div>
+</body>
+</html>
