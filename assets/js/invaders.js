@@ -5,6 +5,8 @@
   'use strict';
   var mount = document.getElementById('hero-game');
   if (!mount) return;
+  // Leaderboard API (Cloudflare Worker). Override with <div id="hero-game" data-api="https://...">
+  var API = (mount.getAttribute('data-api') || 'https://invaders-scores.mintyosinty.workers.dev').replace(/\/$/, '');
 
   /* ---------- styles ---------- */
   var css = '' +
@@ -79,6 +81,39 @@
   try { hi = parseInt(localStorage.getItem('mo-invaders-hi') || '0', 10) || 0; } catch (e) {}
   function saveHi() { try { localStorage.setItem('mo-invaders-hi', String(hi)); } catch (e) {} }
 
+  /* ---------- online leaderboard (best-effort: the game works without it) ---------- */
+  var board = null;      // [{name, score, wave, date}] or null if unreachable
+  var gameToken = null;  // issued by the Worker when a game starts
+  var entry = null;      // initials being typed { chars: [i,i,i], pos }
+  var myRank = 0;        // highlighted row after submitting
+  var lbMsg = '';        // status line on the game-over screen
+  var CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  function api(path, body) {
+    var opts = body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
+    return fetch(API + path, opts).then(function (r) {
+      return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'error'); return j; });
+    });
+  }
+  function loadBoard() {
+    return api('/scores').then(function (j) { board = j.scores || []; hud(); }).catch(function () {});
+  }
+  function boardTop() { return board && board.length ? board[0].score : 0; }
+  function qualifies(score) {
+    return !!(board && gameToken && score > 0 && (board.length < 10 || score > board[board.length - 1].score));
+  }
+  function submitScore(name) {
+    lbMsg = 'SAVING...';
+    var payload = { token: gameToken, name: name, score: s.score, wave: s.wave };
+    gameToken = null;
+    api('/submit', payload).then(function (j) {
+      board = j.scores; myRank = j.rank; lbMsg = j.rank ? 'YOU PLACED #' + j.rank + '!' : 'SCORE SAVED';
+      hud();
+    }).catch(function (e) {
+      lbMsg = /slow/.test(e.message) ? 'TRY AGAIN IN A MINUTE' : 'COULD NOT SAVE SCORE';
+    });
+  }
+
   /* ---------- game state ---------- */
   var ROWS = [{ k: 'squid', c: C.magenta, pts: 30 }, { k: 'crab', c: C.cyan, pts: 20 }, { k: 'crab', c: C.cyan, pts: 20 },
               { k: 'octo', c: C.yellow, pts: 10 }, { k: 'octo', c: C.yellow, pts: 10 }];
@@ -122,7 +157,7 @@
   function pad(n) { n = String(n); while (n.length < 4) n = '0' + n; return n; }
   function hud() {
     elScore.textContent = pad(s ? s.score : 0);
-    elHi.textContent = pad(hi);
+    elHi.textContent = pad(Math.max(hi, boardTop()));
     elLives.textContent = s ? (s.lives > 0 ? '\u2665\u2665\u2665\u2665\u2665'.slice(0, s.lives) : '\u2014') : '\u2665\u2665\u2665';
   }
   function boom(x, y, color, n) {
@@ -156,7 +191,7 @@
     if (state === 'dying') {
       s.dieTimer -= dt;
       if (s.dieTimer <= 0) {
-        if (s.lives <= 0) { state = 'over'; cab.classList.remove('is-live'); }
+        if (s.lives <= 0) { gameOver(); }
         else { state = 'play'; s.player.x = W / 2 - 13; s.bombs = []; }
       }
       return;
@@ -276,6 +311,25 @@
       hud();
     }
   }
+  function gameOver() {
+    myRank = 0; lbMsg = '';
+    if (qualifies(s.score)) {
+      var last3 = 'AAA';
+      try { last3 = localStorage.getItem('mo-invaders-name') || 'AAA'; } catch (e) {}
+      entry = { chars: last3.split('').map(function (c) { return Math.max(0, CHARSET.indexOf(c)); }), pos: 0 };
+      state = 'entry';
+    } else {
+      state = 'over'; cab.classList.remove('is-live');
+      if (!board) lbMsg = '';
+      else if (s.score > 0) lbMsg = 'TOP 10 NEEDS ' + pad(board[board.length - 1].score + 10);
+    }
+  }
+  function confirmEntry() {
+    var name = entry.chars.map(function (i) { return CHARSET[i]; }).join('');
+    try { localStorage.setItem('mo-invaders-name', name); } catch (e) {}
+    entry = null; state = 'over'; cab.classList.remove('is-live');
+    submitScore(name);
+  }
   function killPlayer() {
     boom(s.player.x + 13, PLAYER_Y + 8, C.green, 26);
     state = 'dying'; s.dieTimer = 1.2; s.shot = null; s.bombs = [];
@@ -318,21 +372,62 @@
     ctx.globalAlpha = 1;
 
     var blinkOn = Math.floor(now / 500) % 2 === 0;
-    if (state === 'attract') {
+    var showBoard = board && board.length && Math.floor(now / 7000) % 2 === 1;
+    if (state === 'attract' && showBoard) {
+      drawBoard(now, 0);
+      if (blinkOn) text('CLICK OR PRESS ENTER', W / 2, H - 22, 8, C.cyan);
+    } else if (state === 'attract') {
       ctx.fillStyle = 'rgba(5,5,15,.55)'; ctx.fillRect(0, H / 2 - 36, W, 72);
       text('SPACE INVADERS', W / 2, H / 2 - 16, 12, C.yellow);
       if (blinkOn) text('CLICK OR PRESS ENTER', W / 2, H / 2 + 12, 8, C.cyan);
+    } else if (state === 'entry') {
+      ctx.fillStyle = 'rgba(5,5,15,.85)'; ctx.fillRect(0, 0, W, H);
+      text('NEW HIGH SCORE!', W / 2, 56, 14, blinkOn ? C.yellow : C.magenta);
+      text(pad(s.score), W / 2, 86, 12, C.green);
+      text('ENTER YOUR INITIALS', W / 2, 124, 8, C.cyan);
+      for (var e = 0; e < 3; e++) {
+        var ex = W / 2 - 60 + e * 60;
+        text(CHARSET[entry.chars[e]], ex, 172, 28, e === entry.pos ? C.yellow : C.white);
+        if (e === entry.pos) {
+          text('\u25b2', ex, 140, 8, C.muted); text('\u25bc', ex, 204, 8, C.muted);
+          if (blinkOn) { ctx.fillStyle = C.yellow; ctx.fillRect(ex - 16, 196, 32, 3); }
+        }
+      }
+      text('\u25b2\u25bc LETTER   \u25c0\u25b6 MOVE', W / 2, 244, 7, C.muted);
+      text('TYPE OR PRESS ENTER TO SAVE', W / 2, 264, 7, C.muted);
     } else if (state === 'paused') {
       ctx.fillStyle = 'rgba(5,5,15,.6)'; ctx.fillRect(0, 0, W, H);
       text('PAUSED', W / 2, H / 2 - 8, 14, C.yellow);
       text('CLICK OR PRESS P', W / 2, H / 2 + 16, 8, C.cyan);
+    } else if (state === 'over' && board && board.length) {
+      drawBoard(now, myRank);
+      text('GAME OVER  \u00b7  ' + pad(s.score), W / 2, H - 40, 8, C.red);
+      if (lbMsg) text(lbMsg, W / 2, H - 56, 7, C.green);
+      if (blinkOn) text('PRESS ENTER TO RETRY', W / 2, H - 22, 8, C.cyan);
     } else if (state === 'over') {
       ctx.fillStyle = 'rgba(5,5,15,.65)'; ctx.fillRect(0, 0, W, H);
       text('GAME OVER', W / 2, H / 2 - 22, 16, C.red);
       text('SCORE ' + pad(s.score) + (s.score >= hi && s.score > 0 ? '  NEW HI!' : ''), W / 2, H / 2 + 4, 8, C.green);
-      if (blinkOn) text('PRESS ENTER TO RETRY', W / 2, H / 2 + 26, 8, C.cyan);
+      if (lbMsg) text(lbMsg, W / 2, H / 2 + 22, 7, C.green);
+      if (blinkOn) text('PRESS ENTER TO RETRY', W / 2, H / 2 + 42, 8, C.cyan);
     } else if (state === 'play' && s.banner > 0) {
       text('WAVE ' + s.wave, W / 2, H / 2 + 30, 12, C.yellow);
+    }
+  }
+  function drawBoard(now, highlight) {
+    ctx.fillStyle = 'rgba(5,5,15,.88)'; ctx.fillRect(0, 0, W, H);
+    text('\u2605 TOP 10 \u2605', W / 2, 22, 12, C.yellow);
+    var rowColors = [C.yellow, C.cyan, C.magenta];
+    for (var i = 0; i < 10; i++) {
+      var y = 50 + i * 19, row = board[i];
+      var col = row ? rowColors[Math.min(i, 2)] : C.muted;
+      if (i >= 3 && row) col = C.white;
+      if (highlight === i + 1) col = Math.floor(now / 250) % 2 ? C.green : C.white;
+      var rank = (i + 1 < 10 ? ' ' : '') + (i + 1) + '.';
+      text(rank, 70, y, 8, col, 'right');
+      text(row ? row.name : '---', 96, y, 8, col, 'left');
+      text(row ? pad(row.score) : '----', 240, y, 8, col, 'right');
+      text(row ? 'W' + row.wave : '', 312, y, 8, row ? C.muted : C.muted, 'right');
     }
   }
 
@@ -341,7 +436,7 @@
   function frame(now) {
     raf = 0;
     var dt = Math.min(0.05, (now - last) / 1000 || 0); last = now;
-    if (state !== 'paused' && state !== 'over') update(dt);
+    if (state !== 'paused' && state !== 'over' && state !== 'entry') update(dt);
     else if (s.parts.length) update(0);
     draw(now);
     schedule();
@@ -362,7 +457,13 @@
   });
 
   /* ---------- controls ---------- */
-  function start() { newGame(); state = 'play'; cab.classList.add('is-live'); cab.focus({ preventScroll: true }); }
+  function start() {
+    newGame(); state = 'play'; myRank = 0; lbMsg = '';
+    cab.classList.add('is-live'); cab.focus({ preventScroll: true });
+    gameToken = null;
+    api('/start', {}).then(function (j) { gameToken = j.token; }).catch(function () {});
+    if (!board) loadBoard();
+  }
   function pause() { state = 'paused'; cab.classList.remove('is-live'); keys = {}; }
   function resume() { state = 'play'; cab.classList.add('is-live'); last = 0; }
 
@@ -374,6 +475,7 @@
 
   var MAP = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', Space: 'fire', ArrowUp: 'fire', KeyW: 'fire' };
   cab.addEventListener('keydown', function (e) {
+    if (state === 'entry') { entryKey(e); return; }
     var k = MAP[e.code];
     if (k || e.code === 'Enter' || e.code === 'KeyP') e.preventDefault(); // keep the page from scrolling while playing
     if (e.code === 'Enter' || (e.code === 'Space' && (state === 'attract' || state === 'over'))) {
@@ -388,11 +490,25 @@
   });
   cab.addEventListener('keyup', function (e) { var k = MAP[e.code]; if (k) keys[k] = false; });
 
+  function entryKey(e) {
+    var n = CHARSET.length, c = entry.chars, p = entry.pos;
+    var typed = e.key && e.key.length === 1 ? CHARSET.indexOf(e.key.toUpperCase()) : -1;
+    if (typed >= 0) { c[p] = typed; entry.pos = Math.min(2, p + 1); }
+    else if (e.code === 'ArrowUp' || e.code === 'KeyW') c[p] = (c[p] + 1) % n;
+    else if (e.code === 'ArrowDown' || e.code === 'KeyS') c[p] = (c[p] - 1 + n) % n;
+    else if (e.code === 'ArrowLeft' || e.code === 'Backspace') entry.pos = Math.max(0, p - 1);
+    else if (e.code === 'ArrowRight' || e.code === 'Space') entry.pos = Math.min(2, p + 1);
+    else if (e.code === 'Enter') confirmEntry();
+    else return;
+    e.preventDefault();
+  }
+
   /* ---------- boot ---------- */
   newGame();
   state = 'attract';
   s.lives = 3; hud();
   schedule();
+  loadBoard();
   // re-draw once the pixel font arrives so canvas text uses it
   if (document.fonts && document.fonts.load) document.fonts.load('10px "Press Start 2P"').then(function () { last = 0; schedule(); });
 })();
