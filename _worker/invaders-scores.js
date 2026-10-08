@@ -1,5 +1,5 @@
 /**
- * MintyOsinty \u2014 Space Invaders leaderboard (Cloudflare Worker, module syntax)
+ * MintyOsinty \u2014 Bug Blaster mini game leaderboard (Cloudflare Worker, module syntax)
  *
  * Bindings (set in the Cloudflare dashboard \u2192 Worker \u2192 Settings):
  *   SCORES       KV namespace binding
