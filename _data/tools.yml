@@ -71,6 +71,7 @@ tools:
 
   - name: Wireshark
     url: https://www.wireshark.org/download.html
+    cheatsheet: /cheatsheets/wireshark/
     category: PACKET ANALYSIS
     icon: "🦈"
     color: yellow

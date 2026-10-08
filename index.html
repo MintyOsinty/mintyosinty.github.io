@@ -460,6 +460,8 @@
   .tool-intel ol li + li { margin-top: 0.3rem; }
   .tool-intel ol li::marker { color: var(--card-color, var(--yellow)); }
   .tool-intel b { color: var(--white); font-weight: normal; }
+  .tool-sheet { position: relative; z-index: 2; display: inline-block; margin-top: 0.75rem; font-family: 'Press Start 2P', monospace; font-size: 0.38rem; letter-spacing: 0.1em; text-decoration: none; color: var(--bg); background: var(--card-color, var(--yellow)); padding: 0.45rem 0.6rem; }
+  .tool-sheet:hover { filter: brightness(1.15); }
 
   /* pixelated power icon */
   .tool-icon {
@@ -1169,6 +1171,7 @@
       </details>
       {% endif %}
       <span class="tool-link">GET IT</span>
+      {% if tool.cheatsheet %}<a class="tool-sheet" href="{{ tool.cheatsheet | relative_url }}">▶ CHEAT SHEET</a>{% endif %}
     </div>
     {% endfor %}
 

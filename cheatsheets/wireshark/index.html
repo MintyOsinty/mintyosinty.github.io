@@ -1,0 +1,277 @@
+---
+layout: default
+title: Wireshark Cheat Sheet
+description: Copy-and-paste Wireshark display filters for finding specific connections, protocols, problems and suspicious traffic.
+sections:
+  - id: who
+    title: Who's Talking
+    intro: Narrow things down to one machine, one network or one device.
+    items:
+      - f: 'ip.addr == 192.168.1.10'
+        d: Everything to or from one IP address.
+      - f: 'ip.src == 192.168.1.10'
+        d: Only traffic that IP is sending.
+      - f: 'ip.dst == 192.168.1.10'
+        d: Only traffic going to that IP.
+      - f: 'ip.addr == 192.168.1.10 && ip.addr == 8.8.8.8'
+        d: Just the conversation between two hosts.
+      - f: 'ip.addr == 192.168.1.0/24'
+        d: Anything on a whole subnet.
+      - f: '!(ip.addr == 192.168.1.10)'
+        d: Hide one noisy host.
+      - f: 'eth.addr == aa:bb:cc:dd:ee:ff'
+        d: A specific device by MAC address.
+  - id: ports
+    title: Ports & Protocols
+    intro: Find connections by service. Typing a protocol name alone (like ssh) also works.
+    items:
+      - f: 'tcp.port == 443'
+        d: One TCP port, either direction.
+      - f: 'udp.port == 53'
+        d: One UDP port, either direction.
+      - f: 'tcp.dstport == 3389'
+        d: Connections going to a port (here, RDP).
+      - f: 'tcp.port in {80 443 8080}'
+        d: Several ports at once.
+      - f: 'ssh'
+        d: SSH sessions.
+      - f: 'rdp'
+        d: Remote Desktop.
+      - f: 'smb || smb2'
+        d: Windows file sharing.
+      - f: 'dhcp'
+        d: Devices asking for an IP address (joining the network).
+      - f: 'arp'
+        d: Who-has-this-IP chatter on the local network.
+      - f: 'icmp'
+        d: Pings and other ICMP messages.
+  - id: tcp
+    title: TCP Connections
+    intro: Watch connections open, get accepted, get refused and close.
+    items:
+      - f: 'tcp.flags.syn == 1 && tcp.flags.ack == 0'
+        d: New connection attempts (the first SYN).
+      - f: 'tcp.flags.syn == 1 && tcp.flags.ack == 1'
+        d: Connections a server accepted (SYN/ACK).
+      - f: 'tcp.flags.reset == 1'
+        d: Resets. Connections refused or killed.
+      - f: 'tcp.flags.fin == 1'
+        d: Connections closing normally.
+      - f: 'tcp.stream eq 5'
+        d: One single conversation. Right-click a packet → Follow → TCP Stream sets this for you.
+      - f: 'tcp.len > 0'
+        d: Only packets that actually carry data (skips the bare ACKs).
+  - id: web
+    title: Web & DNS
+    intro: See what sites and names a machine is reaching for.
+    items:
+      - f: 'dns'
+        d: All DNS lookups and answers.
+      - f: 'dns.flags.response == 0'
+        d: DNS questions only.
+      - f: 'dns.qry.name contains "example"'
+        d: Lookups for a specific domain.
+      - f: 'dns.flags.rcode == 3'
+        d: Lookups for names that don't exist (NXDOMAIN).
+      - f: 'http.request'
+        d: Every HTTP request.
+      - f: 'http.request.method == "POST"'
+        d: Form submissions and uploads.
+      - f: 'http.response.code >= 400'
+        d: HTTP errors (404s, 500s and friends).
+      - f: 'tls.handshake.type == 1'
+        d: The start of every HTTPS connection (Client Hello).
+      - f: 'tls.handshake.extensions_server_name contains "example"'
+        d: Which HTTPS site was visited, even though the traffic is encrypted.
+  - id: problems
+    title: Network Problems
+    intro: Start here when the network feels slow or flaky.
+    items:
+      - f: 'tcp.analysis.flags'
+        d: Every TCP problem Wireshark noticed, all at once.
+      - f: 'tcp.analysis.retransmission'
+        d: Packets that had to be re-sent. Lots of these means loss.
+      - f: 'tcp.analysis.zero_window'
+        d: A receiver too busy to accept more data.
+      - f: 'icmp.type == 3'
+        d: Destination unreachable messages.
+      - f: '!(arp || dns || icmp || ssdp || mdns || llmnr || nbns)'
+        d: Hide the background chatter so the real traffic stands out.
+  - id: security
+    title: Suspicious Stuff
+    intro: Quick hunts for things that shouldn't be there.
+    items:
+      - f: 'tcp.flags.syn == 1 && tcp.flags.ack == 0 && tcp.window_size <= 1024'
+        d: Tiny-window SYNs, a classic sign of an Nmap SYN scan.
+      - f: 'tcp.port == 4444'
+        d: Metasploit's default listener port.
+      - f: 'arp.duplicate-address-detected'
+        d: Two devices claiming the same IP, a possible ARP spoof.
+      - f: 'ftp || telnet'
+        d: Old protocols that send logins in plain text.
+      - f: 'ftp.request.command == "PASS"'
+        d: FTP passwords sent in the clear.
+      - f: 'http.authorization'
+        d: HTTP logins (often just base64, not encryption).
+      - f: 'frame matches "(?i)password"'
+        d: Any packet containing "password", any capitalization.
+      - f: 'http.user_agent contains "python"'
+        d: Scripts and tools instead of real browsers.
+capture:
+  - f: 'host 192.168.1.10'
+    d: Only record traffic to or from one IP.
+  - f: 'net 192.168.1.0/24'
+    d: Only record one subnet.
+  - f: 'port 53'
+    d: Only record one port.
+  - f: 'not port 22'
+    d: Record everything except SSH (handy when you're connected over SSH).
+---
+<style>
+  .cs-intro { font-size: 1.3rem; margin-bottom: 1.5rem; }
+  .cs-search {
+    width: 100%; font-family: 'VT323', monospace; font-size: 1.4rem;
+    background: var(--panel); color: var(--white); border: 3px solid var(--border);
+    padding: 0.7rem 1rem; outline: none;
+  }
+  .cs-search:focus { border-color: var(--cyan); box-shadow: 0 0 0 1px var(--cyan); }
+  .cs-jump { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 0.5rem; }
+  .cs-jump a {
+    font-family: 'Press Start 2P', monospace; font-size: 0.4rem; color: var(--cyan);
+    border: 2px solid var(--border); padding: 0.45rem 0.6rem; text-decoration: none;
+  }
+  .cs-jump a:hover { border-color: var(--cyan); }
+  .cs-count { color: var(--muted); font-size: 1.05rem; min-height: 1.5rem; }
+
+  .cs-tips { background: var(--panel); border: 3px solid var(--yellow); box-shadow: 5px 5px 0 #7a6e00; padding: 1rem 1.25rem; margin: 1.5rem 0 2rem; font-size: 1.15rem; }
+  .cs-tips h2 { font-family: 'Press Start 2P', monospace; font-size: 0.55rem; color: var(--yellow); margin-bottom: 0.6rem; }
+  .cs-tips li { margin-left: 1.2rem; }
+  .cs-tips li + li { margin-top: 0.25rem; }
+  .cs-tips b { color: var(--yellow); font-weight: normal; }
+
+  .cs-section { margin-top: 2.25rem; }
+  .cs-section h2 {
+    font-family: 'Press Start 2P', monospace; font-size: 0.7rem; color: var(--cyan);
+    border-left: 6px solid var(--cyan); padding-left: 0.8rem; line-height: 1.6;
+  }
+  .cs-section > p { color: var(--soft); font-size: 1.15rem; margin: 0.4rem 0 0.8rem; }
+  .cs-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; align-items: center;
+    background: var(--panel); border: 2px solid var(--border); padding: 0.7rem 0.9rem; margin-top: 0.5rem;
+  }
+  .cs-row:hover { border-color: var(--cyan); }
+  .cs-row code { font-family: 'VT323', monospace; font-size: 1.3rem; color: var(--green); word-break: break-word; }
+  .cs-row p { grid-column: 1 / -1; color: var(--soft); font-size: 1.1rem; line-height: 1.35; }
+  .cs-copy {
+    grid-row: 1; grid-column: 2;
+    font-family: 'Press Start 2P', monospace; font-size: 0.38rem; cursor: pointer;
+    background: transparent; color: var(--yellow); border: 2px solid var(--yellow); padding: 0.45rem 0.6rem;
+  }
+  .cs-copy.done { background: var(--green); border-color: var(--green); color: var(--bg); }
+  .cs-capture h2 { color: var(--magenta); border-left-color: var(--magenta); }
+  .cs-empty { display: none; color: var(--muted); font-size: 1.2rem; margin-top: 2rem; }
+  .cs-back { margin-top: 3rem; font-size: 1.15rem; color: var(--soft); border-top: 3px solid var(--border); padding-top: 1.5rem; }
+  .cs-back a { color: var(--cyan); }
+</style>
+
+<section>
+  <div class="sec-header">
+    <span class="sec-num">01//</span>
+    <h1 class="sec-title cyan">WIRESHARK CHEAT SHEET</h1>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="cs-intro">Copy-and-paste display filters for tracking down specific connections. Paste one into the filter bar at the top of Wireshark and press Enter. Swap the example IPs, ports and names for your own.</p>
+
+  <input class="cs-search" id="cs-search" type="search" placeholder="Search filters... try dns, 443, reset, password" aria-label="Search filters" autocomplete="off">
+  <nav class="cs-jump" aria-label="Jump to section">
+    {% for s in page.sections %}<a href="#{{ s.id }}">{{ s.title | upcase }}</a>{% endfor %}
+    <a href="#capture">CAPTURE FILTERS</a>
+  </nav>
+  <p class="cs-count" id="cs-count" aria-live="polite"></p>
+
+  <div class="cs-tips">
+    <h2>★ FIND EVERY CONNECTION FAST</h2>
+    <ul>
+      <li><b>Statistics → Conversations</b> lists every pair of machines that talked, with byte counts. Sort by Bytes to find the big talkers.</li>
+      <li><b>Statistics → Endpoints</b> lists every IP, MAC and port seen in the capture.</li>
+      <li>Right-click any packet → <b>Conversation Filter</b> or <b>Follow → TCP Stream</b> to isolate it.</li>
+      <li>The filter bar turns <b>green</b> when a filter is valid and <b>red</b> when it isn't.</li>
+      <li>Combine filters with <b>&amp;&amp;</b> (and), <b>||</b> (or) and <b>!</b> (not). Use <b>contains</b> for partial text matches.</li>
+    </ul>
+  </div>
+
+  {% for s in page.sections %}
+  <div class="cs-section" id="{{ s.id }}">
+    <h2>{{ s.title | upcase }}</h2>
+    <p>{{ s.intro }}</p>
+    {% for it in s.items %}
+    <div class="cs-row">
+      <code>{{ it.f | escape }}</code>
+      <button class="cs-copy" type="button">COPY</button>
+      <p>{{ it.d }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+
+  <div class="cs-section cs-capture" id="capture">
+    <h2>CAPTURE FILTERS (DIFFERENT SYNTAX!)</h2>
+    <p>These go in the capture filter box <em>before</em> you hit start, and they limit what gets recorded at all. They use a different language from the display filters above, so the two aren't interchangeable.</p>
+    {% for it in page.capture %}
+    <div class="cs-row">
+      <code>{{ it.f | escape }}</code>
+      <button class="cs-copy" type="button">COPY</button>
+      <p>{{ it.d }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <p class="cs-empty" id="cs-empty">No filters match that search.</p>
+
+  <p class="cs-back">Don't have Wireshark yet? Grab it from the <a href="{{ '/#tools' | relative_url }}">Tools Arsenal</a>. Only capture on networks you own or have permission to monitor.</p>
+</section>
+
+<script>
+  // Copy a filter to the clipboard
+  document.querySelectorAll('.cs-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('code').textContent;
+      var ok = function () {
+        btn.textContent = 'COPIED'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'COPY'; btn.classList.remove('done'); }, 1500);
+      };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(ok).catch(function () { selectText(btn); });
+      } else { selectText(btn); }
+    });
+  });
+  function selectText(btn) {
+    var range = document.createRange();
+    range.selectNodeContents(btn.parentElement.querySelector('code'));
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    btn.textContent = 'CTRL+C';
+  }
+
+  // Live search across filters, descriptions and section names
+  var input = document.getElementById('cs-search');
+  var count = document.getElementById('cs-count');
+  var empty = document.getElementById('cs-empty');
+  input.addEventListener('input', function () {
+    var q = input.value.trim().toLowerCase();
+    var shown = 0;
+    document.querySelectorAll('.cs-section').forEach(function (sec) {
+      var title = sec.querySelector('h2').textContent.toLowerCase();
+      var any = 0;
+      sec.querySelectorAll('.cs-row').forEach(function (row) {
+        var hit = !q || row.textContent.toLowerCase().indexOf(q) > -1 || title.indexOf(q) > -1;
+        row.style.display = hit ? '' : 'none';
+        if (hit) any++;
+      });
+      sec.style.display = any ? '' : 'none';
+      shown += any;
+    });
+    count.textContent = q ? shown + (shown === 1 ? ' filter' : ' filters') + ' found' : '';
+    empty.style.display = q && !shown ? 'block' : 'none';
+  });
+</script>
