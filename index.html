@@ -726,6 +726,7 @@
 
   /* Skills bars RPG */
   .skills-panel { }
+  .skill-tree-title { font-family: 'Press Start 2P', monospace; font-size: 0.5rem; color: var(--cyan); margin-bottom: 1.25rem; letter-spacing: 0.08em; }
 
   .skill-row { margin-bottom: 1.25rem; }
 
@@ -1363,17 +1364,62 @@
     </div>
 
     <div class="skills-panel fade-up" style="animation-delay:0.15s">
-      <!-- Add your own skill bars here, e.g.:
+      <div class="skill-tree-title">▶ SKILL TREE</div>
+      <!-- Edit a skill: change the name, the XP number, and --pct to match. -->
       <div class="skill-row">
         <div class="skill-head">
-          <span class="skill-name">SKILL NAME</span>
-          <span class="skill-pts">XX XP</span>
+          <span class="skill-name">OSINT / RECON</span>
+          <span class="skill-pts">80 XP</span>
         </div>
         <div class="skill-track">
-          <div class="skill-fill" style="--pct:XX%; --bar-color:var(--cyan); --delay:0.3s"></div>
+          <div class="skill-fill" style="--pct:80%; --bar-color:var(--cyan); --delay:0.20s"></div>
         </div>
       </div>
-      -->
+      <div class="skill-row">
+        <div class="skill-head">
+          <span class="skill-name">WEB APP TESTING</span>
+          <span class="skill-pts">65 XP</span>
+        </div>
+        <div class="skill-track">
+          <div class="skill-fill" style="--pct:65%; --bar-color:var(--magenta); --delay:0.35s"></div>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-head">
+          <span class="skill-name">NETWORK ANALYSIS</span>
+          <span class="skill-pts">70 XP</span>
+        </div>
+        <div class="skill-track">
+          <div class="skill-fill" style="--pct:70%; --bar-color:var(--yellow); --delay:0.50s"></div>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-head">
+          <span class="skill-name">DIGITAL FORENSICS</span>
+          <span class="skill-pts">70 XP</span>
+        </div>
+        <div class="skill-track">
+          <div class="skill-fill" style="--pct:70%; --bar-color:var(--green); --delay:0.65s"></div>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-head">
+          <span class="skill-name">SECURITY ASSESSMENTS</span>
+          <span class="skill-pts">85 XP</span>
+        </div>
+        <div class="skill-track">
+          <div class="skill-fill" style="--pct:85%; --bar-color:var(--cyan); --delay:0.80s"></div>
+        </div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-head">
+          <span class="skill-name">SCRIPTING / POWERSHELL</span>
+          <span class="skill-pts">80 XP</span>
+        </div>
+        <div class="skill-track">
+          <div class="skill-fill" style="--pct:80%; --bar-color:var(--magenta); --delay:0.95s"></div>
+        </div>
+      </div>
     </div>
 
   </div>
