@@ -1,0 +1,176 @@
+---
+layout: default
+title: Projects
+description: Things I've built and things still being forged. Some quests are open, some are still sealed.
+---
+<style>
+  .sec-title.green { color: var(--bg); background: var(--green); box-shadow: 4px 4px 0 #1a7a0a; }
+  .proj-intro { font-size: 1.3rem; color: var(--soft); margin-bottom: 2.5rem; }
+
+  /* ===== Sealed quest card ===== */
+  .quest {
+    background: var(--panel); border: 3px solid var(--yellow); box-shadow: 6px 6px 0 #7a6e00;
+    padding: 2rem 1.5rem; display: grid; gap: 2rem; align-items: center;
+  }
+  @media (min-width: 720px) { .quest { grid-template-columns: 240px 1fr; padding: 2.25rem; } }
+
+  .chest-wrap { position: relative; display: flex; justify-content: center; }
+  .chest {
+    background: none; border: 0; padding: 0; cursor: pointer; width: 200px; max-width: 70vw;
+    filter: drop-shadow(0 0 18px rgba(255,230,0,0.25));
+  }
+  .chest svg { width: 100%; height: auto; display: block; image-rendering: pixelated; }
+  .chest:focus-visible { outline: 3px dashed var(--cyan); outline-offset: 8px; }
+  .chest.shake { animation: shake 0.45s steps(6); }
+  @keyframes shake {
+    0%,100% { transform: translate(0,0); } 20% { transform: translate(-6px,0); }
+    40% { transform: translate(6px,-2px); } 60% { transform: translate(-4px,0); } 80% { transform: translate(4px,0); }
+  }
+  .spark { position: absolute; width: 6px; height: 6px; background: var(--yellow); opacity: 0; animation: twinkle 2.4s steps(4) infinite; }
+  .spark:nth-child(2) { top: 6%; left: 12%; animation-delay: 0.3s; }
+  .spark:nth-child(3) { top: 18%; right: 8%; animation-delay: 1.1s; background: var(--cyan); }
+  .spark:nth-child(4) { bottom: 12%; left: 4%; animation-delay: 1.7s; background: var(--magenta); }
+  .spark:nth-child(5) { bottom: 4%; right: 14%; animation-delay: 0.8s; }
+  @keyframes twinkle { 0%,100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1.2); } }
+
+  .quest-tag { font-family: 'Press Start 2P', monospace; font-size: 0.45rem; letter-spacing: 0.1em; color: var(--muted); }
+  .quest-name {
+    font-family: 'Press Start 2P', monospace; font-size: clamp(0.8rem, 2.6vw, 1.15rem); line-height: 1.7;
+    color: var(--white); margin: 0.6rem 0 0.9rem; word-break: break-word;
+  }
+  .redact { background: var(--white); color: var(--white); padding: 0 0.15em; user-select: none; }
+  .sealed {
+    display: inline-block; font-family: 'Press Start 2P', monospace; font-size: 0.45rem; letter-spacing: 0.12em;
+    color: var(--bg); background: var(--red); padding: 0.45rem 0.7rem; box-shadow: 3px 3px 0 #7a0011; margin-bottom: 1rem;
+  }
+  .secret { font-family: 'Press Start 2P', monospace; font-size: 0.6rem; line-height: 1.8; color: var(--yellow); margin-bottom: 0.75rem; }
+  .quest-text { font-size: 1.25rem; color: var(--soft); }
+
+  .items { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.25rem; }
+  .item {
+    font-family: 'Press Start 2P', monospace; font-size: 0.42rem; letter-spacing: 0.08em;
+    border: 2px solid var(--border); padding: 0.5rem 0.65rem; color: var(--soft); display: flex; align-items: center; gap: 0.5rem;
+  }
+  .item .dot { width: 8px; height: 8px; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .item.missing { border-color: #5a1020; color: var(--red); }
+  .item.missing .dot { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+  .dialog {
+    margin-top: 1.25rem; min-height: 3.6rem; background: #05050f; border: 3px solid var(--white);
+    padding: 0.75rem 1rem; font-size: 1.25rem; color: var(--white);
+  }
+  .dialog .caret { color: var(--yellow); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ===== Empty slots ===== */
+  .slots { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 2rem; }
+  @media (min-width: 620px) { .slots { grid-template-columns: 1fr 1fr; } }
+  .slot {
+    border: 3px dashed var(--border); padding: 1.5rem; text-align: center; color: var(--muted);
+    font-family: 'Press Start 2P', monospace; font-size: 0.45rem; line-height: 2; letter-spacing: 0.08em;
+  }
+  .slot b { display: block; font-size: 1.4rem; color: var(--border); font-weight: normal; margin-bottom: 0.4rem; }
+
+  .proj-note { margin-top: 3rem; font-size: 1.15rem; color: var(--soft); border-top: 3px solid var(--border); padding-top: 1.5rem; }
+  .proj-note a { color: var(--cyan); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chest.shake, .spark, .dialog .caret { animation: none; }
+  }
+</style>
+
+<section class="blog-list">
+  <div class="sec-header">
+    <span class="sec-num">04//</span>
+    <h1 class="sec-title green">PROJECTS</h1>
+    <div class="sec-line"></div>
+  </div>
+
+  <p class="proj-intro">Things I've built, and things still being forged in the workshop. Some quests are open. Some are still sealed.</p>
+
+  <article class="quest" aria-labelledby="quest-name">
+    <div class="chest-wrap">
+      <button class="chest" id="chest" type="button" aria-label="A locked treasure chest. Try to open it.">
+        <svg viewBox="0 0 64 52" shape-rendering="crispEdges" aria-hidden="true">
+          <!-- outline -->
+          <rect x="2" y="4" width="60" height="46" fill="#1a0d05"/>
+          <!-- lid -->
+          <rect x="4" y="6" width="56" height="16" fill="#8b4a1c"/>
+          <rect x="4" y="6" width="56" height="2" fill="#b8652a"/>
+          <rect x="4" y="14" width="56" height="1" fill="#6a3512"/>
+          <!-- seam -->
+          <rect x="4" y="22" width="56" height="2" fill="#1a0d05"/>
+          <!-- body -->
+          <rect x="4" y="24" width="56" height="24" fill="#6e3812"/>
+          <rect x="4" y="35" width="56" height="1" fill="#4a240b"/>
+          <rect x="4" y="46" width="56" height="2" fill="#4a240b"/>
+          <!-- metal bands -->
+          <rect x="4" y="6" width="6" height="42" fill="#d99a1e"/>
+          <rect x="54" y="6" width="6" height="42" fill="#d99a1e"/>
+          <rect x="4" y="6" width="2" height="42" fill="#ffd24a"/>
+          <rect x="54" y="6" width="2" height="42" fill="#ffd24a"/>
+          <rect x="10" y="6" width="1" height="42" fill="#8a5c08"/>
+          <rect x="53" y="6" width="1" height="42" fill="#8a5c08"/>
+          <!-- rivets -->
+          <rect x="7" y="10" width="2" height="2" fill="#fff3b0"/>
+          <rect x="7" y="40" width="2" height="2" fill="#fff3b0"/>
+          <rect x="57" y="10" width="2" height="2" fill="#fff3b0"/>
+          <rect x="57" y="40" width="2" height="2" fill="#fff3b0"/>
+          <!-- lock -->
+          <rect x="25" y="15" width="14" height="18" fill="#1a0d05"/>
+          <rect x="26" y="16" width="12" height="16" fill="#ffe600"/>
+          <rect x="26" y="16" width="12" height="2" fill="#fff59a"/>
+          <rect x="26" y="30" width="12" height="2" fill="#b39d00"/>
+          <rect x="30" y="20" width="4" height="4" fill="#1a0d05"/>
+          <rect x="31" y="24" width="2" height="5" fill="#1a0d05"/>
+        </svg>
+      </button>
+      <span class="spark"></span><span class="spark"></span><span class="spark"></span><span class="spark"></span>
+    </div>
+
+    <div>
+      <div class="quest-tag">QUEST 01 // PERSONAL PROJECT</div>
+      <h2 class="quest-name" id="quest-name"><span class="redact" aria-hidden="true">████████████</span><span style="position:absolute;left:-9999px">Classified project</span></h2>
+      <span class="sealed">■ SEALED</span>
+      <p class="secret">"IT'S A SECRET TO EVERYBODY."</p>
+      <p class="quest-text">Something is being forged deep in the workshop. When it's ready, this chest opens. Until then, no peeking.</p>
+
+      <div class="items" aria-label="Dungeon progress">
+        <span class="item"><span class="dot"></span>MAP</span>
+        <span class="item"><span class="dot"></span>COMPASS</span>
+        <span class="item missing"><span class="dot"></span>BOSS KEY</span>
+      </div>
+
+      <div class="dialog" id="dialog" aria-live="polite">The chest is locked. Try opening it anyway<span class="caret">▼</span></div>
+    </div>
+  </article>
+
+  <div class="slots">
+    <div class="slot"><b>?</b>EMPTY SLOT<br>MORE QUESTS AHEAD</div>
+    <div class="slot"><b>?</b>EMPTY SLOT<br>MORE QUESTS AHEAD</div>
+  </div>
+
+  <p class="proj-note">While you wait, sharpen your sword: try the <a href="{{ '/blog/wireshark-training-stage-1-arp-storm/' | relative_url }}">Wireshark Training</a> series or browse the <a href="{{ '/#tools' | relative_url }}">Tools Arsenal</a>.</p>
+</section>
+
+<script>
+  (function () {
+    var chest = document.getElementById('chest');
+    var dialog = document.getElementById('dialog');
+    var lines = [
+      'It won\'t budge. You need the Boss Key.',
+      'You rattle the lock. Nothing happens.',
+      'Hey! Listen! This one isn\'t ready yet.',
+      'Some treasure takes time to forge.',
+      'Okay, okay. Check back later, hero.'
+    ];
+    var i = 0;
+    chest.addEventListener('click', function () {
+      chest.classList.remove('shake');
+      void chest.offsetWidth; // restart the animation
+      chest.classList.add('shake');
+      dialog.innerHTML = lines[i % lines.length] + '<span class="caret">▼</span>';
+      i++;
+    });
+  })();
+</script>
