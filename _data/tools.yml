@@ -68,3 +68,28 @@ tools:
       - "In VMware Workstation, go to <b>File → Open</b>, pick the <b>.vmx</b> file, and power it on."
       - "Log in with <b>kali / kali</b>, then run <b>passwd</b> to change the password right away."
     note: Kali's tools are real attack tools. Only point them at machines you own or have written permission to test.
+
+  - name: Wireshark
+    url: https://www.wireshark.org/download.html
+    category: PACKET ANALYSIS
+    icon: "🦈"
+    color: yellow
+    level: 5
+    platform: Windows / macOS / Linux
+    description: The free, go-to packet analyzer. Capture network traffic and see exactly what's being said, packet by packet.
+    about: >-
+      When something on the network is acting weird, Wireshark is how you stop guessing.
+      It records the traffic going in and out of your machine and lets you dig into every single packet.
+      It looks overwhelming at first, but a couple of display filters go a long way.
+    uses:
+      - Troubleshooting slow or broken connections
+      - Seeing what an app or device is really talking to
+      - Learning how DNS, HTTP and TCP actually work
+      - Digging through pcap files from CTFs and labs
+    howto:
+      - "Go to <b>wireshark.org/download</b> and grab the <b>Windows x64 Installer</b> (Arm64 for ARM laptops, the .dmg for Mac)."
+      - "Run the installer and keep the defaults. When it offers <b>Npcap</b>, leave it checked. That's what lets Wireshark capture live traffic."
+      - "Already on Kali? It's preinstalled. On Ubuntu, run <b>sudo apt install wireshark</b>."
+      - "Open Wireshark and double-click your active network adapter (the one with the moving line)."
+      - "Type a display filter like <b>dns</b> or <b>http</b> in the top bar to cut through the noise."
+    note: Only capture on networks you own or have permission to monitor. Captures can contain passwords and personal info, so don't share pcap files publicly.
