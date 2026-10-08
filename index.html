@@ -456,6 +456,10 @@
     letter-spacing: 0.1em;
   }
   .intel-note { color: var(--red) !important; }
+  .tool-intel ol { margin: 0.25rem 0 0.5rem 1.3rem; padding: 0; }
+  .tool-intel ol li + li { margin-top: 0.3rem; }
+  .tool-intel ol li::marker { color: var(--card-color, var(--yellow)); }
+  .tool-intel b { color: var(--white); font-weight: normal; }
 
   /* pixelated power icon */
   .tool-icon {
@@ -1155,11 +1159,12 @@
       </div>
       <div class="tool-desc">{{ tool.description }}</div>
       {% if tool.platform %}<div class="tool-platform">&gt; {{ tool.platform }}</div>{% endif %}
-      {% if tool.about or tool.uses %}
+      {% if tool.about or tool.uses or tool.howto %}
       <details class="tool-intel">
         <summary>WHAT IS IT?</summary>
         {% if tool.about %}<p>{{ tool.about }}</p>{% endif %}
         {% if tool.uses %}<div class="intel-label">USED FOR:</div><ul>{% for u in tool.uses %}<li>{{ u }}</li>{% endfor %}</ul>{% endif %}
+        {% if tool.howto %}<div class="intel-label">HOW TO GET IT:</div><ol class="intel-steps">{% for s in tool.howto %}<li>{{ s }}</li>{% endfor %}</ol>{% endif %}
         {% if tool.note %}<p class="intel-note">⚠ {{ tool.note }}</p>{% endif %}
       </details>
       {% endif %}

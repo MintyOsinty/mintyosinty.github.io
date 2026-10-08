@@ -17,3 +17,54 @@ tools:
       - Catching stuff that's exposed and shouldn't be
       - Double-checking that firewall rules actually do what you think
     note: Only scan networks you own or have permission to scan. Seriously.
+
+  - name: VMware Workstation Pro
+    url: https://knowledge.broadcom.com/external/article/344595/downloading-vmware-workstation-pro.html
+    category: VIRTUALIZATION
+    icon: "🖥️"
+    color: magenta
+    level: 3
+    platform: Windows / Linux
+    description: Run whole computers inside your computer. Spin up Kali, Windows or a practice target in a window, break it, and roll it back with a snapshot.
+    about: >-
+      VMware Workstation Pro is free now, but Broadcom buried the download behind an account and a maze of menus.
+      Once you have it, it's my go-to for a home lab: isolated VMs, snapshots before you try something risky,
+      and virtual networks you can wire however you want.
+    uses:
+      - Building a safe home lab
+      - Running Kali or other operating systems without wiping your PC
+      - Snapshot, test, roll back, repeat
+      - Practicing on vulnerable VMs that stay off your real network
+    howto:
+      - "Create a free Broadcom account at <b>profile.broadcom.com</b> and verify your email."
+      - "Sign in at <b>support.broadcom.com</b>."
+      - "Open <b>My Downloads → Free Software Downloads</b>. On some layouts it's <b>Software → VMware Cloud Foundation → My Downloads</b>, then the \"Free Software Downloads\" link."
+      - "Click <b>VMware Workstation Pro</b> and pick the latest release for Windows or Linux."
+      - "Click the <b>Terms and Conditions</b> link first (that unlocks the \"I agree\" box), tick it, then click <b>Download</b>."
+      - "If it asks for trade compliance info, fill it in, click <b>Submit</b>, then click <b>Download</b> again."
+    note: Turn on virtualization in your BIOS first and uninstall VMware Player if you have it. If Hyper-V or WSL is on, VMs still run, just slower. On a Mac you need VMware Fusion instead.
+
+  - name: Kali Linux
+    url: https://www.kali.org/get-kali/#kali-virtual-machines
+    category: PENTEST DISTRO
+    icon: "🐉"
+    color: cyan
+    level: 3
+    platform: VMware / VirtualBox / Bare metal / WSL
+    description: The go-to Linux distro for security testing, with hundreds of tools like Nmap, Wireshark, Hydra and Burp Suite already installed.
+    about: >-
+      Kali is the toolbox. Instead of installing security tools one at a time, you get hundreds of them ready to go.
+      The easiest way in is the pre-built VMware image: nothing to install, just extract it and open it in VMware Workstation.
+    uses:
+      - Practicing pentesting in a home lab
+      - Learning the Linux command line
+      - CTFs and training platforms
+      - Having all your recon and testing tools in one place
+    howto:
+      - "Go to <b>kali.org/get-kali</b> and choose <b>Virtual Machines</b>."
+      - "Download the <b>VMware</b> image. It's a <b>.7z</b> file."
+      - "Check the download: in PowerShell run <b>Get-FileHash</b> on the file and make sure it matches the SHA256 shown on Kali's site."
+      - "Extract the .7z with <b>7-Zip</b> or Windows 11's built-in extractor."
+      - "In VMware Workstation, go to <b>File → Open</b>, pick the <b>.vmx</b> file, and power it on."
+      - "Log in with <b>kali / kali</b>, then run <b>passwd</b> to change the password right away."
+    note: Kali's tools are real attack tools. Only point them at machines you own or have written permission to test.
